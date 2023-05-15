@@ -1,11 +1,11 @@
 /* Global Variables */
-// 582893658bf7bdd93d1260f185da2833
+
 
 // Create a new date instance dynamically with JS
 let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 const baseUrl = "https://api.openweathermap.org/data/2.5/weather";
-const apiKey = "582893658bf7bdd93d1260f185da2833";
+const apiKey = "582893658bf7bdd93d1260f185da2833&units=imperial";
 
 // Create an event listener for the element with the id: generate, with
 // a callback function to execute when it is clicked.
@@ -14,6 +14,7 @@ document.getElementById('generate').addEventListener('click', performAction);
 function performAction(error){
     const zipCode = document.getElementById('zip').value;
     const feelings = document.getElementById('feelings').value;
+    const date = new Date().toLocaleDateString();
 
     if (!isValidZip(zipCode)) {
         // Show an error message to the user, e.g., using an alert or updating the DOM
@@ -32,10 +33,9 @@ function performAction(error){
             console.log(data);
             postData('/data', 
                 {temperature:data.main.temp,
-                date:data.dt,
+                date:date,
                 userResponse:feelings});
         })
-        .then(updateUI())
         .catch((error) => {
             console.log(error)
         });
@@ -71,24 +71,19 @@ const getWeatherData = async (baseUrl, zipCode, apiKey) => {
   
     try {
       const newData = await response.json();
-      return newData;
+      updateUI(newData)
       console.log(newData);
     } catch (error) {
       console.log('error', error);
     }
   };
 
-  const updateUI = async () => {
-    
-    const request = await fetch('/data');
-    try{
-      const allData = await request.json();
-      document.getElementById('date').innerHTML = allData[allData.length-1].date;
-      document.getElementById('temp').innerHTML = allData[allData.length-1].temperature;
-      document.getElementById('content').innerHTML = allData[allData.length-1].userResponse;
+  const updateUI = (data) => {
   
-    }catch(error){
-      console.log("error", error);
-    }
+      document.getElementById('date').innerHTML = `Date: ${data.date}`;
+      document.getElementById('temp').innerHTML = `Temperature: ${data.temperature}°F`;
+      document.getElementById('content').innerHTML = `I feel ${data.userResponse}`;
+  
+    
   }
 

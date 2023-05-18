@@ -5,7 +5,7 @@
 let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 const baseUrl = "https://api.openweathermap.org/data/2.5/weather";
-const apiKey = "582893658bf7bdd93d1260f185da2833&units=imperial";
+const apiKey = "enter your api key here";
 
 // Create an event listener for the element with the id: generate, with
 // a callback function to execute when it is clicked.
